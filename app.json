@@ -1,32 +1,56 @@
 {
   "expo": {
-    "name": "Akhar JoR",
+    "name": "Akhar: Punjabi Games",
     "slug": "game",
-    "version": "1.0.1",
+    "version": "1.1.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/akhar.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#274C7C"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.khalisfoundation.gurmukhi-games",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "buildNumber": "34"
     },
     "android": {
-      "package": "com.khalis.akharjor",
-      "versionCode": 1,
+      "package": "com.khalisfoundation.gurmukhi_games",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 34,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/adaptive-akhar.png",
+        "backgroundColor": "#274C7C"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "extra": {
+      "eas": {
+        "projectId": "d2512b2e-7df8-42a1-b0de-5e11fe888618"
+      }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
+        }
+      ]
+    ]
   }
 }

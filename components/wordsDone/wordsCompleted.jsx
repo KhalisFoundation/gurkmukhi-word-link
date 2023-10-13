@@ -1,97 +1,196 @@
-/* eslint-disable react-native/no-color-literals */
-import * as React from 'react';
+/* eslint-disable no-nested-ternary */
+import * as React from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
+  StatusBar,
   FlatList,
-} from 'react-native';
-import { useSelector } from 'react-redux';
-import Level from './levelDisplays';
+  ScrollView,
+  Dimensions,
+} from "react-native";
+import AppLoading from "expo-app-loading";
+import { useSelector, useDispatch } from "react-redux";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import IonIcons from "react-native-vector-icons/Ionicons";
+import { useEffect } from "react";
+import { useFonts } from "expo-font";
+import * as Anvaad from "anvaad-js";
+import { SafeAreaView } from "react-native-safe-area-context";
+import PropTypes from "prop-types";
+import Level from "./levelDisplays";
+import { showMeaningPopUp } from "../../redux/actions";
+import * as Platform from "../../util/orientation";
 
-import theColors from '../../util/colors';
-
-function RightWords({ navigation }) {
+const RightWords = ({ navigation }) => {
   const state = useSelector((theState) => theState.theGameReducer);
+  const dispatch = useDispatch();
   const theCorrectWords = state.correctWords;
   const theGivenUpWords = state.givenUpWords;
+  const [fontsLoaded] = useFonts({
+    Arial: require("../../assets/fonts/Arial.ttf"),
+    GurbaniHeavy: require("../../assets/fonts/GurbaniAkharHeavySG.ttf"),
+    Bookish: require("../../assets/fonts/Bookish.ttf"),
+    Mochy: require("../../assets/fonts/Mochy.ttf"),
+    Muli: require("../../assets/fonts/Muli.ttf"),
+    Prabhki: require("../../assets/fonts/Prabhki.ttf"),
+  });
 
-  const colors = theColors[state.darkMode];
+  const [localState, setLocalState] = React.useState({
+    orientation: Platform.isPortrait() ? "portrait" : "landscape",
+    devicetype: Platform.isTablet() ? "tablet" : "phone",
+  });
+
+  // Event Listener for orientation changes
+  const [screen, setScreen] = React.useState({
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  });
+
+  let dime = Math.min(screen.width, screen.height);
+  Dimensions.addEventListener("change", () => {
+    dime = Math.min(screen.width, screen.height);
+    setScreen({
+      width: Dimensions.get("window").width,
+      height: Dimensions.get("window").height,
+    });
+    setLocalState({
+      orientation: Platform.isPortrait() ? "portrait" : "landscape",
+    });
+  });
+
   const styles = StyleSheet.create({
     container: {
-      alignItems: 'center',
-      backgroundColor: colors.wordsCompleted.container,
-      justifyContent: 'center',
-      width: '100%',
-      height: '100%',
-      paddingTop: '10%',
+      alignItems: "center",
+      backgroundColor: "#D1FBFF",
+      justifyContent: "space-between",
+      width: "100%",
+      height: "100%",
+      paddingBottom: localState.orientation === "portrait" ? null : 10,
     },
-    header: {
-      flexDirection: 'row',
+    inner: {
+      width: screen.width,
+      backgroundColor: "#00E9FE",
+      alignItems: "center",
     },
-    backButton: {
-      flex: 1,
+    downStyle: {},
+    meaningStyle: {
+      width: "90%",
+      height: dime * 0.175,
+      backgroundColor: "#00E9FE",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
     },
-    backArrow: {
-      width: 50,
-      height: 50,
-    },
-    title: {
-      fontSize: 32,
-      flex: 3,
-      right: 20,
+    arrow: {
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      height: dime * 0.09,
+      width: dime * 0.09,
+      marginBottom: "0%",
+      backgroundColor: "#fff",
+      borderRadius: dime * 0.05,
+      elevation: 5,
     },
     listContainer: {
       // backgroundColor: colors.wordsCompleted.listContainer,
-      width: '95%',
-      height: '60%',
-      padding: 10,
+      height:
+        localState.orientation === "portrait"
+          ? Platform.isTablet()
+            ? "60%"
+            : "70%"
+          : Platform.isTablet()
+          ? "45%"
+          : "50%",
+      width: "95%",
+      paddingBottom: 5,
+      paddingTop: 10,
+    },
+    listContainerFull: {
+      height:
+        localState.orientation === "portrait"
+          ? Platform.isTablet()
+            ? "80%"
+            : "85%"
+          : Platform.isTablet()
+          ? "70%"
+          : "85%",
+      width: "95%",
+      paddingBottom: 30,
+      paddingTop: 10,
+    },
+    answerBoxAlt: {
+      height: "5%",
+      width: "95%",
     },
     answerBox: {
-      backgroundColor: colors.wordsCompleted.answerBox,
-      width: '95%',
-      height: '30%',
+      backgroundColor: "#fff",
+      width: "95%",
+      height: localState.orientation === "portrait" ? "20%" : "30%",
       borderRadius: 20,
+      padding: 15,
+      elevation: 5,
     },
     answerRow: {
-      flexDirection: 'row',
+      flexDirection: "row",
+    },
+    answerRowAlt: {
+      display: "none",
     },
     answerText: {
-      fontSize: 20,
-      color: colors.wordsCompleted.answerText,
+      fontSize: dime * 0.04,
+      color: "#464646",
+      fontFamily: "Muli",
     },
     answerForAnswerText: {
-      fontSize: 20,
-
-      color: colors.wordsCompleted.answerForAnswerText,
+      fontSize: dime * 0.04,
+      color: "green",
+      fontFamily: "Muli",
+    },
+    shadow: {
+      shadowColor: "black",
+      shadowOpacity: 0.5,
+      shadowRadius: 5,
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+    },
+    absLeft: { position: "absolute", left: 10 },
+    mt5: { marginTop: 5 },
+    prabhkiFont: { fontSize: dime * 0.08, fontFamily: "Prabhki" },
+    completedLevels: {
+      color: "#000",
+      fontSize: dime * 0.05,
+      fontFamily: "Muli",
+      margin: 0,
     },
   });
 
   const longestMeaning = {
-    engText: '',
-    punjabiText: '',
-    meaning: '',
-    type: '',
-    level: '',
-    status: '',
+    engText: "",
+    punjabiText: "",
+    meaning: "",
+    level: "",
+    status: "",
   };
 
   const [showAnswer, setAnswer] = React.useState(longestMeaning);
 
-  const theWords = theCorrectWords.map((word) => {
-    return {
-      ...word,
-      status: 'Answered correctly',
-    };
-  });
+  const theWords = theCorrectWords.map((word) => ({
+    ...word,
+    status: "Answered correctly",
+    color: "green",
+  }));
   theGivenUpWords.map((word) => {
     theWords.push({
       ...word,
-      status: 'Given Up',
+      status: "Given Up",
+      color: "red",
     });
-    return 'nothing';
+    return "nothing";
   });
 
   const levelsWithWords = {};
@@ -101,103 +200,128 @@ function RightWords({ navigation }) {
     } else {
       levelsWithWords[word.level].push(word);
     }
-    return 'nothing';
+    return "nothing";
   });
   const levels = [];
-  for (let i = 0; i < 22; i += 1) {
-    levels.push({
-      key: String(i + 1),
-      text: `Level ${String(i + 1)}`,
-      words: levelsWithWords[i + 1],
-    });
-  }
-
-  function meaningLength(meaning) {
-    if (meaning.length < 60) {
-      return <Text style={styles.answerForAnswerText}>{meaning}</Text>;
+  for (let i = 0; i < state.ALL_WORDS.levels.length - 1; i += 1) {
+    if (levelsWithWords[i + 1]) {
+      levels.push({
+        key: String(i + 1),
+        text: `Level ${String(i + 1)}`,
+        words: levelsWithWords[i + 1],
+      });
     }
-    let theMeaning = [];
-    for (let i = 0; i < meaning.length; i += 1) {
-      if (i % 50 === 0 && i !== 0) {
-        theMeaning.push('-');
-        theMeaning.push('\n');
-      }
-      theMeaning.push(meaning[i]);
-    }
-    theMeaning = theMeaning.join('');
-    return (
-      <Text style={{ ...styles.answerForAnswerText, fontSize: 12 }}>
-        {theMeaning}
-      </Text>
-    );
   }
+  let levelsLeft;
+  if (state.finalLevel - state.levelProgress[0].level - 1 > 0) {
+    levelsLeft = `${
+      state.levelProgress[0].wordsNeeded !== 10 && state.finalLevel !== 8
+        ? state.finalLevel - state.levelProgress[0].level - 1
+        : state.finalLevel - state.levelProgress[0].level
+    } levels to go`;
+  } else {
+    levelsLeft = "More levels coming soon";
+  }
+  levels.push({
+    key: "end",
+    text: levelsLeft,
+    words: [],
+  });
 
-  const renderItem = React.useCallback(({ item }) => {
-    return (
-      <Level title={item.text} theWords={item.words} setAnswer={setAnswer} />
-    );
+  useEffect(() => {
+    dispatch(showMeaningPopUp(true));
   }, []);
+
+  const renderItem = React.useCallback(
+    ({ item }) => (
+      <Level levelId={item.key} title={item.text} theWords={item.words} setAnswer={setAnswer} />
+    ),
+    []
+  );
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          title="Home"
-          onPress={() => {
-            navigation.navigate('Home');
-          }}
-        >
-          <Image
-            source={require('../../images/left_arrow.png')}
-            style={styles.backArrow}
+    <SafeAreaView style={styles.container}>
+      <StatusBar translucent backgroundColor="#00E9FE" barStyle="dark-content" />
+      <View style={styles.inner}>
+        <View style={[!state.meaningPopup ? styles.downStyle : null, styles.meaningStyle]}>
+          <IonIcons
+            name="chevron-back"
+            color="#000"
+            style={styles.absLeft}
+            size={dime * 0.07}
+            onPress={() => {
+              navigation.navigate("AkharJor");
+            }}
           />
-        </TouchableOpacity>
-        <Text style={styles.title}>Words Completed</Text>
+          <Text style={styles.completedLevels}>Completed Levels</Text>
+        </View>
       </View>
-      <View style={styles.listContainer}>
+      <View style={state.meaningPopup ? styles.listContainerFull : styles.listContainer}>
+        {state.x}
         <FlatList
-          // style={styles.listContainer}
           data={levels}
           renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
         />
       </View>
 
-      <View style={styles.answerBox}>
-        <View style={styles.answerRow}>
-          <Text style={styles.answerText}>Gurmukhi Text</Text>
-          <Text style={styles.answerText}> : </Text>
-          <Text style={styles.answerForAnswerText}>
-            {showAnswer.punjabiText}
+      <View style={state.meaningPopup ? styles.answerBoxAlt : styles.answerBox}>
+        <TouchableOpacity
+          style={styles.arrow}
+          onPress={() => {
+            dispatch(showMeaningPopUp(!state.meaningPopup));
+          }}
+        >
+          <Icon
+            name={state.meaningPopup ? "keyboard-arrow-up" : "keyboard-arrow-down"}
+            size={dime * 0.09}
+            color="#274C7C"
+            style={styles.shadow}
+          />
+        </TouchableOpacity>
+        <View style={state.meaningPopup ? styles.answerRowAlt : styles.answerRow}>
+          <Text
+            style={[styles.answerForAnswerText, styles.prabhkiFont, { color: showAnswer.color }]}
+          >
+            {showAnswer.engText}
           </Text>
+          {/* to be asked */}
+          {showAnswer.engText ? (
+            <Text style={[styles.answerForAnswerText, styles.mt5, { color: showAnswer.color }]}>
+              {" {"}
+              {Anvaad.translit(showAnswer.engText)}
+              {"}"}
+            </Text>
+          ) : (
+            <Text style={[styles.answerText, styles.mt5]}>Select any word to know more!</Text>
+          )}
         </View>
-        <View style={styles.answerRow}>
-          <Text style={styles.answerText}>English Text</Text>
-          <Text style={styles.answerText}> : </Text>
-          <Text style={styles.answerForAnswerText}>{showAnswer.engText}</Text>
+        <View style={state.meaningPopup ? styles.answerRowAlt : styles.answerRow}>
+          <ScrollView scrollEventThrottle={16} showsHorizontalScrollIndicator={false} horizontal>
+            <Text style={[styles.answerForAnswerText, { color: showAnswer.color }]}>
+              {showAnswer.meaning}
+            </Text>
+          </ScrollView>
         </View>
-        <View style={styles.answerRow}>
-          <Text style={styles.answerText}>Meaning</Text>
-          <Text style={styles.answerText}> : </Text>
-          {meaningLength(showAnswer.meaning)}
-        </View>
-        <View style={styles.answerRow}>
-          <Text style={styles.answerText}>Level</Text>
-          <Text style={styles.answerText}> : </Text>
-          <Text style={styles.answerForAnswerText}>{showAnswer.level}</Text>
-        </View>
-        <View style={styles.answerRow}>
-          <Text style={styles.answerText}>Type</Text>
-          <Text style={styles.answerText}> : </Text>
-          <Text style={styles.answerForAnswerText}>{showAnswer.type}</Text>
-        </View>
-        <View style={styles.answerRow}>
-          <Text style={styles.answerText}>Status</Text>
-          <Text style={styles.answerText}> : </Text>
-          <Text style={styles.answerForAnswerText}>{showAnswer.status}</Text>
-        </View>
+        {showAnswer.status ? (
+          <View style={state.meaningPopup ? styles.answerRowAlt : styles.answerRow}>
+            <Text style={styles.answerText}>Status</Text>
+            <Text style={styles.answerText}> : </Text>
+            <Text style={[styles.answerForAnswerText, { color: showAnswer.color }]}>
+              {showAnswer.status}
+            </Text>
+          </View>
+        ) : null}
       </View>
-    </View>
+    </SafeAreaView>
   );
-}
+};
+
+RightWords.propTypes = {
+  navigation: PropTypes.shape().isRequired,
+};
 
 export default RightWords;

@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
+
 // wordlink.db DB should saved in this same directory.
 async function openDatabase() {
   if (!(await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite`)).exists) {

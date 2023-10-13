@@ -1,13 +1,6 @@
-export default function getWords(words) {
-  // console.log(words);
-  // console.log(words.length);
-  if (words.length < 5) {
-    console.log(words.length);
-  }
+const getWords = (words) => {
   const getRandomWord = () => words[Math.floor(Math.random() * words.length)];
-  // First word
   const firstWord = getRandomWord();
-  // Second Word
   let secondWord = getRandomWord();
   while (firstWord.punjabiText === secondWord.punjabiText) {
     secondWord = getRandomWord();
@@ -28,3 +21,5 @@ export default function getWords(words) {
   }
   return [characters, firstWord, secondWord];
 }
+
+export default getWords;
