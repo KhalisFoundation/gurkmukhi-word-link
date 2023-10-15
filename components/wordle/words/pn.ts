@@ -1,4 +1,4 @@
-import { allWords } from '../../../util/allWords';
+import allWords from '../../../util/allWords';
 
 // combine all lists to one in allWords.levels starting from index 1
 const levelList = allWords.levels.slice(1).flat();

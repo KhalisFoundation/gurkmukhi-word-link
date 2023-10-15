@@ -15,10 +15,11 @@ import MoreGiveUps from "./components/getMoreGiveUps/getMoreGiveUps";
 import About from "./components/about/about";
 import New2048 from "./components/game2048/app";
 import Wordle from "./components/wordle/wordle";
-import { Store } from "./redux/store";
+import configureStore from "./redux/store";
 import { auth } from "./firebase";
 
 const Stack = createStackNavigator();
+const { store } = configureStore();
 
 const App = () => {
   auth.signInAnonymously();
@@ -36,7 +37,7 @@ const App = () => {
   const routeNameRef = React.useRef();
 
   return (
-    <Provider store={Store}>
+    <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer
           ref={navigationRef}
@@ -64,7 +65,7 @@ const App = () => {
             }}
           >
             <Stack.Screen name="Menu" component={MenuScreen} />
-            <Stack.Screen name="AkharJor" component={HomeScreen} />
+            <Stack.Screen name="akhar_jor" component={HomeScreen} />
             <Stack.Screen name="2048" component={New2048} />
             <Stack.Screen name="play" options={{ headerShown: false }} component={GameScreen} />
             <Stack.Screen name="wordle" options={{ headerShown: false }} component={Wordle} />

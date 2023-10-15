@@ -12,7 +12,7 @@ import * as Animatable from 'react-native-animatable';
 import { closeNextLevelModal, reset } from '../../../redux/actions';
 
 const RetryModal = () => {
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const [fontsLoaded] = useFonts({
     Bookish: require('../../assets/fonts/Bookish.ttf'),
     Mochy: require('../../assets/fonts/Mochy.ttf'),

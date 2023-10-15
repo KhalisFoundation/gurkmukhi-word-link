@@ -1,20 +1,20 @@
-import { View, Dimensions } from 'react-native';
-import React from 'react';
-import * as Platform from '../../../util/orientation';
+import { View, Dimensions } from "react-native";
+import React from "react";
+import * as Platform from "../../../util/orientation";
 
 const GridCell = () => {
   // Event Listener for orientation changes
   const [screen, setScreen] = React.useState({
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   });
 
   let dimeMin = Math.min(screen.width, screen.height);
-  Dimensions.addEventListener('change', () => {
+  Dimensions.addEventListener("change", () => {
     dimeMin = Math.min(screen.width, screen.height);
     setScreen({
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height
+      width: Dimensions.get("window").width,
+      height: Dimensions.get("window").height,
     });
   });
 
@@ -27,12 +27,12 @@ const GridCell = () => {
       height: ITEM_WIDTH,
       marginHorizontal: MARGIN_WIDTH,
       marginVertical: MARGIN_WIDTH,
-      backgroundColor: '#0005', // 'rgba(238, 228, 218, 0.35)',
+      backgroundColor: "#0005", // 'rgba(238, 228, 218, 0.35)',
       borderRadius: dimeMin * 0.02,
-    }
+    },
   };
 
-  return (<View style={styles.container} />);
+  return <View style={styles.container} />;
 };
 
 export default GridCell;

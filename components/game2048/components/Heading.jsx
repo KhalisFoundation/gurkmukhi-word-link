@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import dimensions from "../../../util/dimensions";
 
 const Heading = (props) => {
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const [fontsLoaded] = useFonts({
     Muli: require("../../../assets/fonts/Muli.ttf"),
     GurbaniAkhar: require("../../../assets/fonts/GurbaniAkharSG.ttf"),

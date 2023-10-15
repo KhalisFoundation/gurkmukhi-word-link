@@ -23,11 +23,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { setGiveUpLives } from "../../redux/actions";
 import * as Platform from "../../util/orientation";
 import { defaultMatraValue, matras, withMatra, withoutMatra } from "../GurmukhiKeyboard/constants";
-import { getKeyboardKeyValue, getMatraAkhar } from "../GurmukhiKeyboard/utils";
+import { getKeyboardKeyValue, getMatraAkhar } from "../GurmukhiKeyboard/utils/index";
 
 const MoreGiveUps = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const [fontsLoaded] = useFonts({
     Arial: require("../../assets/fonts/Arial.ttf"),
     GurbaniHeavy: require("../../assets/fonts/GurbaniAkharHeavySG.ttf"),
@@ -85,7 +85,7 @@ const MoreGiveUps = ({ route, navigation }) => {
     }
   };
 
-  const prevScreen = route.params.prevScreen === 0 ? "AkharJor" : "play";
+  const prevScreen = route.params.prevScreen === 0 ? "akhar_jor" : "play";
   const styles = StyleSheet.create({
     container: {
       alignItems: "center",
@@ -284,7 +284,7 @@ const MoreGiveUps = ({ route, navigation }) => {
               navigation.navigate(prevScreen);
             }}
           />
-          <Text style={styles.headerText}>Get More Credits</Text>
+          <Text style={styles.headerText}>Get More Hints</Text>
         </View>
       </View>
       <ScrollView
@@ -297,9 +297,7 @@ const MoreGiveUps = ({ route, navigation }) => {
             <IconM name="lightbulb-on" size={dime * 0.06} color="orange" />
             <Text style={styles.upText}>{state.giveUpsLeft}</Text>
           </View>
-          <Text style={styles.instructionsText}>
-            Try to type the following to get more Credits.
-          </Text>
+          <Text style={styles.instructionsText}>Try to type the following to get more Hints.</Text>
         </View>
         <View style={styles.DHANcover}>
           <Text style={{ ...styles.DHAN }}>{word}</Text>

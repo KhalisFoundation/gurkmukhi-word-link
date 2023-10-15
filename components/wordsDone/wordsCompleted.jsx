@@ -24,7 +24,7 @@ import { showMeaningPopUp } from "../../redux/actions";
 import * as Platform from "../../util/orientation";
 
 const RightWords = ({ navigation }) => {
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const dispatch = useDispatch();
   const theCorrectWords = state.correctWords;
   const theGivenUpWords = state.givenUpWords;
@@ -253,7 +253,7 @@ const RightWords = ({ navigation }) => {
             style={styles.absLeft}
             size={dime * 0.07}
             onPress={() => {
-              navigation.navigate("AkharJor");
+              navigation.navigate("akhar_jor");
             }}
           />
           <Text style={styles.completedLevels}>Completed Levels</Text>

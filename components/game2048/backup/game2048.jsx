@@ -28,7 +28,7 @@ import {
 
 const Game2048 = ({ navigation }) => {
   const dispatch = useDispatch();
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const [fontsLoaded] = useFonts({
     Arial: require('../../assets/fonts/Arial.ttf'),
     GurbaniHeavy: require('../../assets/fonts/GurbaniAkharHeavySG.ttf'),

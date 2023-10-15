@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import theColors from "../../../util/colors";
 
 const LoadingModal = ({ visible, theText }) => {
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
 
   let colors;
   if (state === undefined) {

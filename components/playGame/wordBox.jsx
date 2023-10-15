@@ -8,7 +8,7 @@ import { setAttempt } from "../../redux/actions";
 import * as Platform from "../../util/orientation";
 
 const WordBox = ({ wordType }) => {
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const dispatch = useDispatch();
 
   // Event Listener for orientation changes

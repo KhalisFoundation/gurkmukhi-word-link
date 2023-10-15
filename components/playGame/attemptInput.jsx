@@ -7,10 +7,10 @@ import { useFonts } from "expo-font";
 import * as Animatable from "react-native-animatable";
 import AppLoading from "expo-app-loading";
 import { setAttempt } from "../../redux/actions";
-import { gurmukhi } from "../utils/gurmukhi";
+import gurmukhi from "../utils/gurmukhi";
 
 const AttemptInput = () => {
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
     Arial: require("../../assets/fonts/Arial.ttf"),

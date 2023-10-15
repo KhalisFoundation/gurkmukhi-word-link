@@ -9,7 +9,7 @@ import dimensions from "../../../util/dimensions";
 
 const BelowGame = (props) => {
   const dispatch = useDispatch();
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
 
   // Event Listener for orientation changes
   const [screen, setScreen] = React.useState({

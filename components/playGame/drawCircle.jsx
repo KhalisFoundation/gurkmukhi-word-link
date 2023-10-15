@@ -21,7 +21,7 @@ import dimensions from '../../util/dimensions';
 
 export const TheCircle = ({ visited, setVisited, points }) => {
   // there can only be from 2-18 characters as input
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const dispatch = useDispatch();
   const pan = useRef(new Animated.ValueXY()).current;
   const [startXY, setStartXY] = useState({ x: 0, y: 0 });

@@ -20,6 +20,6 @@ const getWords = (words) => {
     }
   }
   return [characters, firstWord, secondWord];
-}
+};
 
 export default getWords;

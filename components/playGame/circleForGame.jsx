@@ -19,11 +19,11 @@ import {
   setConfetti,
 } from "../../redux/actions";
 import * as Platform from "../../util/orientation";
-import { gurmukhi } from "../utils/gurmukhi";
+import gurmukhi from "../utils/gurmukhi";
 
 const TheCircle = () => {
   // there can only be from 2-18 characters as input
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const dispatch = useDispatch();
   // const { width } = dimensions;
 

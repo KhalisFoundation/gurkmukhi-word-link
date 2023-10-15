@@ -1,9 +1,9 @@
-import { defaultMatraValue, matras } from '../constants';
+import { defaultMatraValue, matras } from "../constants";
 
-export const getMatraAkhar = (matra, query) => {
+const getMatraAkhar = (matra, query) => {
   const lastChar = query[query.length - 1];
   const matraValue = defaultMatraValue[matra];
-  const notMatraRegex = new RegExp(`[^${matra}]`, 'g');
+  const notMatraRegex = new RegExp(`[^${matra}]`, "g");
 
   if (query.length && !matras.includes(lastChar)) {
     return matraValue.replace(notMatraRegex, lastChar);
@@ -13,3 +13,5 @@ export const getMatraAkhar = (matra, query) => {
   }
   return matraValue;
 };
+
+export default getMatraAkhar;

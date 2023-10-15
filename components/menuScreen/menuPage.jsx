@@ -1,25 +1,16 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Linking,
-  StatusBar,
-  Dimensions,
-} from "react-native";
+import { View, TouchableOpacity, StyleSheet, Linking, StatusBar, Dimensions } from "react-native";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import * as SplashScreen from "expo-splash-screen";
-// import { Audio } from 'expo-av';
-import * as Analytics from "expo-firebase-analytics";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from "prop-types";
 
+import { LinearGradient } from "expo-linear-gradient";
 import * as Platform from "../../util/orientation";
 import Khalis from "../../assets/khalis_incubator_dark.svg";
 import Logo from "../../assets/akhar_logo.svg";
+import Button from "../Button";
 // import { fetchData, setData } from '../../redux/actions';
 
 // const audioPlayer = new Audio.Sound();
@@ -29,7 +20,7 @@ SplashScreen.preventAutoHideAsync();
 
 const MenuScreen = ({ navigation }) => {
   // const dispatch = useDispatch();
-  // const state = useSelector((theState) => theState.theGameReducer);
+  // const state = useSelector((theState) => theState);
   // const [isLoaded, setIsLoaded] = React.useState(false);
   const [fontsLoaded] = useFonts({
     Arial: require("../../assets/fonts/Arial.ttf"),
@@ -82,7 +73,8 @@ const MenuScreen = ({ navigation }) => {
     container: {
       flex: 1,
       padding: 10,
-      backgroundColor: "#274C7C",
+      width: "100%",
+      // backgroundColor: "#274C7C",
     },
     header: {
       width: isPortrait() ? "100%" : "50%",
@@ -124,6 +116,13 @@ const MenuScreen = ({ navigation }) => {
       fontSize: isTablet() ? dime * 0.04 : dime * 0.045,
       fontFamily: "Muli",
       alignSelf: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 1,
+      shadowRadius: 1,
       margin: 10,
     },
     text2048: {
@@ -138,6 +137,14 @@ const MenuScreen = ({ navigation }) => {
       borderRadius: 10,
       margin: 10,
       width: "75%",
+      shadowColor: "#EDD7C6",
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 1,
+      shadowRadius: 0.5,
+      elevation: 5,
     },
     menulogo: {
       resizeMode: "contain",
@@ -148,83 +155,84 @@ const MenuScreen = ({ navigation }) => {
       flexDirection: isPortrait() ? "column" : "row",
       alignItems: "center",
       justifyContent: "space-evenly",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 1,
+        height: 1,
+      },
+      shadowOpacity: 1,
+      shadowRadius: 2,
     },
     khalisTouchableOpacity: {
       alignItems: "center",
       marginVertical: 10,
     },
   });
-  const whichGame = async (gameName) => {
-    await Analytics.logEvent("game_chosen", { gameName });
-  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar hidden />
-      <View style={styles.header}>
-        <View style={styles.upper}>
-          <Logo height="50%" width="60%" style={styles.menulogo} />
-          <View style={styles.mainMenuContainer}>
-            <Text style={styles.mainmenu}>MAIN MENU</Text>
-            {/* <TouchableOpacity onPress={()=> {dispatch(showIntroModal())}} style={{margin: 5}}>
+    <LinearGradient
+      colors={["#330867", "#304877"]}
+      style={{
+        flex: 1,
+        width: localState.width,
+        height: localState.height,
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <SafeAreaView style={styles.container}>
+        <StatusBar hidden />
+        <View style={styles.header}>
+          <View style={styles.upper}>
+            <Logo height="55%" width="70%" style={styles.menulogo} />
+            {/* <View style={styles.mainMenuContainer}>
+            {/* <Text style={styles.mainmenu}>MAIN MENU</Text> 
+            <TouchableOpacity onPress={()=> {dispatch(showIntroModal())}} style={{margin: 5}}>
             <Icon name='info-circle' color={"#7FC8DE"} size={22} />
-          </TouchableOpacity> */}
+          </TouchableOpacity> 
+          </View> */}
           </View>
-        </View>
-        <View style={styles.lower}>
-          <Text style={styles.text}>Select a game to Play</Text>
-          <View style={styles.columns}>
+          <View style={styles.lower}>
+            {/* <Text style={styles.text}>Select a game to Play</Text> */}
+            <View style={styles.columns}>
+              <Button
+                gameId="akhar_jor"
+                navigation={navigation}
+                text="Practice Words"
+                btnStyle={styles.item}
+                textStyle={styles.text}
+              />
+            </View>
+            <View style={styles.columns}>
+              <Button
+                gameId="2048"
+                navigation={navigation}
+                text="Practice Numbers"
+                btnStyle={styles.item}
+                textStyle={styles.text}
+              />
+            </View>
+            <View style={styles.columns}>
+              <Button
+                gameId="wordle"
+                navigation={navigation}
+                text="Punjabi Wordle"
+                btnStyle={styles.item}
+                textStyle={styles.text}
+              />
+            </View>
             <TouchableOpacity
-              style={styles.item}
-              onPress={() => {
-                // if (audioPlayer._loaded) {stopSound()};
-                whichGame("akhar_jor");
-                navigation.navigate("AkharJor");
-              }}
+              style={styles.khalisTouchableOpacity}
+              onPress={() => Linking.openURL("https://khalis.dev")}
             >
-              <Text style={styles.text}>
-                {Platform.OS === "ios" ? "Akhar Jor" : "Gurmukhi Wordlink"}
-              </Text>
+              <Khalis width="50%" height={dime * 0.2} />
             </TouchableOpacity>
           </View>
-          <View style={styles.columns}>
-            <TouchableOpacity
-              style={styles.item}
-              onPress={() => {
-                // if (audioPlayer._loaded) {stopSound()};
-                whichGame("2048");
-                navigation.navigate("2048");
-              }}
-            >
-              <Text style={styles.text2048}>2048</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.columns}>
-            <TouchableOpacity
-              style={styles.item}
-              onPress={() => {
-                // if (audioPlayer._loaded) {stopSound()};
-                whichGame("wordle");
-                navigation.navigate("wordle");
-              }}
-            >
-              <Text style={styles.text}>
-                {Platform.OS === "ios" ? "Shabadle" : "Punjabi Wordle"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={styles.khalisTouchableOpacity}
-            onPress={() => Linking.openURL("https://khalis.dev")}
-          >
-            <Khalis width="50%" height={dime * 0.2} />
-          </TouchableOpacity>
-        </View>
-        {/* <View style={styles.columns}>
+          {/* <View style={styles.columns}>
           <TouchableOpacity
             style={styles.item}
             onPress={() => {
@@ -236,8 +244,9 @@ const MenuScreen = ({ navigation }) => {
             <Text style={styles.text}>Wordle</Text>
           </TouchableOpacity>
         </View> */}
-      </View>
-    </SafeAreaView>
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 

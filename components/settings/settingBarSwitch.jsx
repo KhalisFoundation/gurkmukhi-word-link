@@ -43,7 +43,7 @@ const SwitchBar = ({
     });
   });
 
-  // const state = useSelector((theState) => theState.theGameReducer);
+  // const state = useSelector((theState) => theState);
   const styles = StyleSheet.create({
     shadow: {
       shadowColor: "black",

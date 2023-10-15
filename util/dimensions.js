@@ -1,9 +1,8 @@
-const { Dimensions, StatusBar, Platform } = require('react-native');
+const { Dimensions, StatusBar, Platform } = require("react-native");
 
-let {
-  width, scale, height, fontScale
-} = Dimensions.get('window');
-const isIOS = Platform.OS === 'ios';
+const { width, scale, height } = Dimensions.get("window");
+let { fontScale } = Dimensions.get("window");
+const isIOS = Platform.OS === "ios";
 const statusBarHeight = isIOS ? 20 : StatusBar.currentHeight;
 fontScale = scale;
 // if(scale>3) fontScale = 3;
@@ -22,13 +21,13 @@ module.exports = {
   tabBarHeight: 25 * fontScale,
   contentHeight: height - statusBarHeight,
   getFontSize(size) {
-    return size * fontScale;// 4 6 8 12 16 24 32 48 64
+    return size * fontScale; // 4 6 8 12 16 24 32 48 64
   },
-  getWidth(width) {
-    return width * fontScale;
+  getWidth(customWidth) {
+    return customWidth * fontScale;
   },
-  getHeight(height) {
-    return height * fontScale;
+  getHeight(customHeight) {
+    return customHeight * fontScale;
   },
   size: {
     0.5: 0.5 * fontScale,
@@ -66,6 +65,6 @@ module.exports = {
     70: 70 * fontScale,
     76: 76 * fontScale,
     80: 80 * fontScale,
-    100: 100 * fontScale
-  }
+    100: 100 * fontScale,
+  },
 };

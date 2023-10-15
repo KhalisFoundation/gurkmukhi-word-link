@@ -1,21 +1,23 @@
-import { View, Dimensions } from 'react-native';
-import React from 'react';
-import Tile from './Tile';
-import * as Platform from '../../../util/orientation';
+/* eslint-disable react/forbid-prop-types */
+import { View, Dimensions } from "react-native";
+import React from "react";
+import PropTypes from "prop-types";
+import Tile from "./Tile";
+import * as Platform from "../../../util/orientation";
 
 const TileContainer = ({ tiles }) => {
   // Event Listener for orientation changes
   const [screen, setScreen] = React.useState({
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   });
 
   let dimeMin = Math.min(screen.width, screen.height);
-  Dimensions.addEventListener('change', () => {
+  Dimensions.addEventListener("change", () => {
     dimeMin = Math.min(screen.width, screen.height);
     setScreen({
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height
+      width: Dimensions.get("window").width,
+      height: Dimensions.get("window").height,
     });
   });
 
@@ -23,11 +25,11 @@ const TileContainer = ({ tiles }) => {
     container: {
       width: dimeMin * (Platform.isTablet() ? 0.6 : 0.8),
       height: dimeMin * (Platform.isTablet() ? 0.6 : 0.8),
-      position: 'absolute',
+      position: "absolute",
       left: 0,
       top: 0,
-      overflow: 'hidden',
-    }
+      overflow: "hidden",
+    },
   };
 
   return (
@@ -44,4 +46,9 @@ const TileContainer = ({ tiles }) => {
     </View>
   );
 };
+
+TileContainer.propTypes = {
+  tiles: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
 export default TileContainer;

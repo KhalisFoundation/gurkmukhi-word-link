@@ -7,7 +7,7 @@ import AppLoading from "expo-app-loading";
 import PropTypes from "prop-types";
 
 const NumText = ({ num }) => {
-  const state = useSelector((theState) => theState.theGameReducer);
+  const state = useSelector((theState) => theState);
   const [fontsLoaded] = useFonts({
     GurbaniHeavy: require("../../../assets/fonts/GurbaniAkharHeavySG.ttf"),
     Muli: require("../../../assets/fonts/Muli.ttf"),
